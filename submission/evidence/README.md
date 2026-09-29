@@ -32,3 +32,12 @@ Từ `submission/REPORT.md`, dẫn ảnh bằng đường dẫn tương đối:
 ```
 
 Không commit secret, API key, PII thô hoặc evidence của học viên/lớp khác.
+
+## Evidence hiện có
+
+- Có đúng 14 ảnh PNG theo danh sách `01`–`14` và TXT nguồn tương ứng.
+- `01`–`05`: kết quả kiểm thử, validator, structured log và PII redaction.
+- `06`–`10`: dữ liệu thật từ Langfuse Observations API v2 và Prompt API đã xác thực.
+- `11`: dashboard 6 panel từ dataset runtime cuối.
+- `12`–`14`: metric, log và trace của challenge chính thức, nối bằng cùng correlation ID.
+- PNG được render bằng `scripts/render_evidence.py` từ TXT đã thu thập; script không sinh số liệu runtime.

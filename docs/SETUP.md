@@ -87,7 +87,7 @@ Không dùng `docker compose down -v` nếu còn cần dữ liệu trace/prompt 
 Terminal 1:
 
 ```bash
-uvicorn app.main:app --reload --env-file .env
+python -m uvicorn app.main:app --reload --env-file .env
 ```
 
 Terminal 2:

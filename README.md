@@ -71,7 +71,7 @@ Không chia sẻ key và không chụp màn hình trang hiển thị secret. Xem
 Chạy API ở terminal thứ nhất:
 
 ```bash
-uvicorn app.main:app --reload --env-file .env
+python -m uvicorn app.main:app --reload --env-file .env
 ```
 
 Chạy baseline ở terminal thứ hai:
@@ -82,6 +82,10 @@ python scripts/validate_logs.py
 python scripts/validate_dashboard.py
 python -m pytest -q
 ```
+
+Dashboard local đọc trực tiếp `data/logs.jsonl` tại `http://127.0.0.1:8000/dashboard`
+(dữ liệu tổng hợp JSON tại `/dashboard/data`). Dashboard giữ time range 60 phút,
+tự refresh 30 giây và hiển thị đúng sáu panel theo `config/dashboard.yaml`.
 
 Baseline log chưa đạt là bình thường vì các `TODO` của CP1 chưa được làm. Ghi lại kết quả baseline vào `submission/REPORT.md` trước khi sửa.
 
@@ -126,6 +130,15 @@ Dashboard dùng `data/logs.jsonl` làm nguồn chuẩn và giữ đúng 6 panel 
 ### CP3 — Challenge chính thức
 
 Chỉ chạy khi Lab Coach thông báo mở challenge của K4-L3A. Tại CP3, Lab Coach gửi riêng file đúng lớp; lưu file đó tại `config/challenge.json`. File này đã được `.gitignore` và **không được** force-add/commit/push:
+
+Terminal 1 phải tiếp tục chạy API (nếu terminal này dừng, script sẽ báo
+`WinError 10061`/không kết nối được):
+
+```bash
+python -m uvicorn app.main:app --reload --env-file .env
+```
+
+Sau khi `/health` trả `ok: true`, chạy trong terminal 2:
 
 ```bash
 python scripts/inject_incident.py

@@ -4,6 +4,20 @@ import os
 from contextlib import contextmanager
 from typing import Any
 
+
+class _DisabledClient:
+    """No-op adapter used when credentials are intentionally absent."""
+
+    def update_current_span(self, **kwargs: Any) -> None:
+        return None
+
+    def update_current_generation(self, **kwargs: Any) -> None:
+        return None
+
+    @contextmanager
+    def start_as_current_observation(self, **kwargs: Any):
+        yield self
+
 try:
     from langfuse import get_client, observe, propagate_attributes
 
@@ -33,6 +47,8 @@ except ImportError:  # pragma: no cover - chỉ dùng khi chưa cài requirement
 
 
 def get_langfuse_client():
+    if not tracing_enabled():
+        return _DisabledClient()
     return get_client()
 
 

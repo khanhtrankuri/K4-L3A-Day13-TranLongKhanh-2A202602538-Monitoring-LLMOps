@@ -29,7 +29,21 @@ def main() -> None:
 
     scenario = resolve_incident(args.scenario)
     path = f"/incidents/{scenario}/disable" if args.disable else f"/incidents/{scenario}/enable"
-    r = httpx.post(f"{BASE_URL}{path}", timeout=10.0)
+    try:
+        r = httpx.post(f"{BASE_URL}{path}", timeout=10.0)
+        r.raise_for_status()
+    except httpx.ConnectError:
+        print(
+            "Lỗi: không kết nối được API tại http://127.0.0.1:8000. "
+            "Hãy mở terminal thứ nhất và chạy: "
+            "python -m uvicorn app.main:app --reload --env-file .env",
+            file=sys.stderr,
+        )
+        raise SystemExit(1)
+    except httpx.HTTPError as exc:
+        print(f"Lỗi khi bật/tắt incident: {exc}", file=sys.stderr)
+        raise SystemExit(1)
+
     print(r.status_code, r.json())
 
 
